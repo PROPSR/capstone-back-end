@@ -1,3 +1,5 @@
+const Order = require("../models/order.model");
+
 module.exports.getOrders = function(req, res){
 
 };

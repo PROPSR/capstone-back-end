@@ -1,3 +1,5 @@
+const Quote = require("../models/quote.model");
+
 module.exports.getQuotes = function(req, res){
 
 };

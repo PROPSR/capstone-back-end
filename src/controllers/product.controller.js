@@ -1,3 +1,5 @@
+const Product = require("../models/product.model");
+
 module.exports.getProducts = function(req, res){
 
 };
