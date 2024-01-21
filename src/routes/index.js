@@ -1,12 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const userRouter = require("./auth");
-const orderRouter = require("./order");
-const quoteRouter = require("./quote");
-const projectRouter = require("./project");
-const productRouter = require("./product");
+const orderRouter = require("./order.route");
+const quoteRouter = require("./quote.route");
+const projectRouter = require("./project.route");
+const productRouter = require("./product.route");
+const homeownerRouter = require("./homeowner.route");
+const supplierRouter = require("./supplier.route");
+const contractorRouter = require("./contractor.route")
 
-router.use("/auth", userRouter);
+router.use("/homeowner", homeownerRouter);
+router.use("/supplier", supplierRouter);
+router.use("/contractor", contractorRouter);
 router.use("/orders", orderRouter);
 router.use("/projects", projectRouter);
 router.use("/quotes", quoteRouter);
