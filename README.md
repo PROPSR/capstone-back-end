@@ -34,3 +34,33 @@ Bcrypt
 Jsonwebtoken
 dotenv
 joi validator
+
+> #### To run the app on your local computer
+>
+> - npm install
+> - npm run dev
+
+> #### To run in a production environment
+>
+> - npm run start
+
+> # Git Branch Naming Conventions
+>
+> ### Branch Categories:
+>
+> - _feature_ is for adding, refactoring or removing a feature
+> - _bugfix_ is for fixing a bug
+> - _hotfix_ is for changing code with a temporary solution and/or without following the usual process (usually because of an emergency)
+> - _test_ is for experimenting outside of an issue/ticket
+>
+> # Git Commit Message Pattern
+
+> ### Commit Categories:
+
+> - _build:_ Changes that affect the build system or external dependencies (example scopes: npm)
+> - _docs:_ Documentation only changes
+> - _feat:_ A new feature
+> - _fix:_ A bug fix
+> - _perf:_ A code change that improves performance
+> - _refactor:_ A code change that neither fixes a bug nor adds a feature
+> - _test:_ Adding missing tests or correcting existing tests
