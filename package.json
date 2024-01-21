@@ -1,0 +1,30 @@
+{
+  "name": "propsqr",
+  "version": "1.0.0",
+  "description": "This project aims to streamline the process of home renovation by seamlessly connecting interested homeowners to contractors and suppliers. Through our platform, homeowners will be able to communicate their project needs to the interested parties (contractors and suppliers) and the aforementioned parties can display their goods, services and wages.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+
+  },
+  "keywords": [
+    "Proptech",
+    "Marketplace"
+  ],
+  "author": "DCTP Capstone Group 9",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.2",
+    "express": "^4.18.2",
+    "joi": "^17.12.0",
+    "joi-objectid": "^4.0.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.1.0",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}
