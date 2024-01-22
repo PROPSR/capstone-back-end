@@ -1,4 +1,9 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+const JWT_SECRET = process.env.JWT_SECRET;
+const maxAge = "2 days"
 
 const homeOwnerSchema = new mongoose.Schema({
     email : {
@@ -44,6 +49,25 @@ const homeOwnerSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+homeOwnerSchema.pre("save", async function(){
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt)
+});
+
+homeOwnerSchema.methods.generateToken = function(){
+    return jwt.sign({
+        firstName : this.firstName, 
+        lastName : this.lastName,
+        id : this._id,
+        email : this.email,
+        address : this.address,
+        phoneNumber : this.phoneNumber,
+        userType : this.userType
+    }, 
+        JWT_SECRET, 
+        {expiresIn : maxAge}
+    )};
 
 module.exports = mongoose.model("Homeowner", homeOwnerSchema);
 

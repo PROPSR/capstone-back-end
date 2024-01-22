@@ -7,8 +7,10 @@ module.exports.validateHomeowner = function(req, res, next){
         lastName : Joi.string().required().min(0).max(255).trim(),
         email : Joi.string().email().required().trim().lowercase(),
         password : Joi.string().required().min(6),
-        userType : Joi.string().required(),
-        address : Joi.string().required()
+        userType : Joi.string(),
+        address : Joi.string().required(),
+        profilePhoto : Joi.string(),
+        phoneNumber : Joi.string().required()
     });
 
     const {error} = schema.validate(req.body);
