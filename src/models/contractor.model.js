@@ -36,16 +36,13 @@ const contractorSchema = new mongoose.Schema({
     userType : {
         type : String,
         enum : ["Homeowner", "Contractor","Supplier"],
-        required : true
     },
     yearsOfExperience : {
         type : Number,
         minLength : 0,
-        required: true
     },
     businessAddress : {
         type : String,
-        required : true
     },
     commsPreference : {
         type : String,
