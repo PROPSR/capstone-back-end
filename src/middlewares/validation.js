@@ -22,6 +22,27 @@ module.exports.validateHomeowner = function(req, res, next){
     next();
 };
 
+module.exports.validateContractorSignup = function(req, res, next){
+    const schema = Joi.object({
+        firstName : Joi.string().required().min(0).max(255).trim(),
+        lastName : Joi.string().required().min(0).max(255).trim(),
+        email : Joi.string().email().required().trim().lowercase(),
+        password : Joi.string().required().min(6),
+        phoneNumber : Joi.string().required().min(9).max(13),
+        userType : Joi.string().optional(),
+    });
+
+    const {error} = schema.validate(req.body);
+    if(error){
+        res.status(400).json({
+            message : "An error occured",
+            error : error.details[0].message
+        });
+        return;
+    }
+    next();
+};
+
 module.exports.validateLogin = function(req, res, next){
     const schema = Joi.object({
         email : Joi.string().email().required().trim().lowercase(),
