@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
-const verifyToken = (useType) => async(req, res, next) => {
+const verifyToken = (userType) => async(req, res, next) => {
     const token = await req.headers.authorization.split(" ")[1];
     if(!token) {
         return res.status(401).json({
@@ -15,7 +16,7 @@ const verifyToken = (useType) => async(req, res, next) => {
             })
         };
 
-        if(useType && payload.useType !== useType) {
+        if(userType && payload.userType !== userType) {
             return res.status(403).json({
                 message: "Forbidden. Invalid useType"
             })

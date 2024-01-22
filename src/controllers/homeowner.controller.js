@@ -5,6 +5,6 @@ module.exports.getHomeowner = function(req, res){
 
 };
 
-module.exports.updateHomeowner = function(req, res){
-
+module.exports.updateHomeowner = async function(req, res){
+ 
 };
