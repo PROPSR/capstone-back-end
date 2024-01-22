@@ -4,10 +4,12 @@ require("dotenv").config();
 const {connectToMongoDB} = require("./src/models/index");
 const router = require("./src/routes");
 const PORT = process.env.PORT || 3000;
+const cors = require("cors");
 const error = require("./src/middlewares/error");
 
 
 connectToMongoDB();
+app.use(cors({ origin: '*'}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/api/v1", router);

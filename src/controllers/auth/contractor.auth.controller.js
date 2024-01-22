@@ -23,7 +23,7 @@ module.exports.signup = async function(req, res){
             phoneNumber: phoneNumber,
             userType: "Contractor"
         });
-    
+
         await newContractor.save();
         res.status(200).json({
             success: true,
