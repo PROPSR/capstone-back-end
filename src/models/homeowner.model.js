@@ -1,11 +1,11 @@
-const mongoose = require("mongoose");
+const {Schema , model} = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const JWT_SECRET = process.env.JWT_SECRET;
 const maxAge = "2 days"
 
-const homeOwnerSchema = new mongoose.Schema({
+const homeOwnerSchema = new Schema({
     email : {
         type : String,
         unique : true,
@@ -69,5 +69,5 @@ homeOwnerSchema.methods.generateToken = function(){
         {expiresIn : maxAge}
     )};
 
-module.exports = mongoose.model("Homeowner", homeOwnerSchema);
+module.exports = model("Homeowner", homeOwnerSchema);
 
