@@ -9,8 +9,29 @@ module.exports.validateHomeowner = function(req, res, next){
         password : Joi.string().required().min(6),
         userType : Joi.string(),
         address : Joi.string().required(),
-        profilePhoto : Joi.string(),
         phoneNumber : Joi.string().required()
+    });
+
+    const {error} = schema.validate(req.body);
+    if(error){
+        res.status(400).json({
+            message : "An error occured",
+            error : error.details[0].message
+        });
+        return;
+    }
+    next();
+};
+
+module.exports.validateHomeownerUpdate = function(req, res, next){
+    const schema = Joi.object({
+        firstName : Joi.string().optional().min(0).max(255).trim(),
+        lastName : Joi.string().optional().min(0).max(255).trim(),
+        email : Joi.string().email().optional().trim().lowercase(),
+        password : Joi.string().optional().min(6),
+        userType : Joi.string(),
+        address : Joi.string().optional(),
+        phoneNumber : Joi.string().optional()
     });
 
     const {error} = schema.validate(req.body);
@@ -91,8 +112,28 @@ module.exports.validateLogin = function(req, res, next){
     next();
 };
 
+module.exports.validateSupplierSignup = function(req, res, next){
+    const schema = Joi.object({
+        firstName : Joi.string().required().min(0).max(255).trim(),
+        lastName : Joi.string().required().min(0).max(255).trim(),
+        email : Joi.string().email().required().trim().lowercase(),
+        password : Joi.string().required().min(6),
+        phoneNumber : Joi.string().required().min(9).max(13),
+        userType : Joi.string().optional(),
+    });
 
-module.exports.validateSupplier = function(req, res, next){
+    const {error} = schema.validate(req.body);
+    if(error){
+        res.status(400).json({
+            message : "An error occured",
+            error : error.details[0].message
+        });
+        return;
+    }
+    next();
+};
+
+module.exports.validateSupplierUpdate = function(req, res, next){
     const schema = Joi.object({
         firstName : Joi.string().required().min(0).max(255).trim(),
         lastName : Joi.string().required().min(0).max(255).trim(),

@@ -40,7 +40,7 @@ const supplierSchema = new mongoose.Schema({
     },
     businessAddress : {
         type : String,
-        required : true
+        required : false
     }
 }, {
     timestamps: true
