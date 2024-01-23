@@ -43,21 +43,15 @@ module.exports.deleteHomeowner = async function(req, res, next){
 
 module.exports.uploadPhoto = async function(req, res, next){
     try {
-        console.log("I was called");
-        console.log(req)
-
         const profilePhoto = req.file;
         const profilePhotoUrl = profilePhoto.path;
-
-        console.log(profilePhoto)
-        console.log(profilePhotoUrl)
         
-        let homeowner = await Homeowner.findByIdAndUpdate(req.user.id, {$set : req.body}, {new : true}).select("-password");
+        let homeowner = await Homeowner.findByIdAndUpdate(req.user.id, {$set : {profilePhoto : profilePhotoUrl}}, {new : true}).select("-password");
         if(!homeowner) throw new Error ("The homeowner with the provided ID doesn't exist");
-        // res.status(200).json({
-        //   message: "profilePhoto Uploaded Successfully",
-        //   profilePhoto: profilePhotoUrl,
-        // });
+        res.status(200).json({
+          message: "profilePhoto Uploaded Successfully",
+          data : homeowner
+        });
       } catch (err) {
             next(err);
       }
