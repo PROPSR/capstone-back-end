@@ -9,8 +9,29 @@ module.exports.validateHomeowner = function(req, res, next){
         password : Joi.string().required().min(6),
         userType : Joi.string(),
         address : Joi.string().required(),
-        profilePhoto : Joi.string(),
         phoneNumber : Joi.string().required()
+    });
+
+    const {error} = schema.validate(req.body);
+    if(error){
+        res.status(400).json({
+            message : "An error occured",
+            error : error.details[0].message
+        });
+        return;
+    }
+    next();
+};
+
+module.exports.validateHomeownerUpdate = function(req, res, next){
+    const schema = Joi.object({
+        firstName : Joi.string().optional().min(0).max(255).trim(),
+        lastName : Joi.string().optional().min(0).max(255).trim(),
+        email : Joi.string().email().optional().trim().lowercase(),
+        password : Joi.string().optional().min(6),
+        userType : Joi.string(),
+        address : Joi.string().optional(),
+        phoneNumber : Joi.string().optional()
     });
 
     const {error} = schema.validate(req.body);
