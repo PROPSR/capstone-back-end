@@ -45,6 +45,35 @@ module.exports.validateContractorSignup = function(req, res, next){
     next();
 };
 
+module.exports.validateContractorUpdate = function(req, res, next){
+    const schema = Joi.object({
+        firstName : Joi.string().optional().min(0).max(255).trim(),
+        lastName : Joi.string().optional().min(0).max(255).trim(),
+        email : Joi.string().email().optional().trim().lowercase(),
+        password : Joi.string().optional().min(6),
+        phoneNumber : Joi.string().optional().min(9).max(13),
+        userType : Joi.string().optional(),
+        yearsOfExperience : Joi.string().optional(),
+        businessAddress : Joi.string().optional(),
+        commsPreference : Joi.string().optional(),
+        refrences : Joi.string().optional(),
+        workSchedule : Joi.string().optional(),
+        licensing : Joi.string().optional(),
+        insurance : Joi.string().optional(),
+        scopeOfWork : Joi.string().optional(),
+    });
+
+    const {error} = schema.validate(req.body);
+    if(error){
+        res.status(400).json({
+            message : "An error occured",
+            error : error.details[0].message
+        });
+        return;
+    }
+    next();
+};
+
 module.exports.validateLogin = function(req, res, next){
     const schema = Joi.object({
         email : Joi.string().email().required().trim().lowercase(),

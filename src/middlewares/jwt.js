@@ -9,7 +9,7 @@ const verifyToken = (userType) => async(req, res, next) => {
         })
     };
 
-    jwt.verify(token, process.env.JWT_SECRET, async(err, payload) => {u
+    jwt.verify(token, process.env.JWT_SECRET, async(err, payload) => {
         if(err) {
             return res.status(401).json({
                 message: "Token is invalid"
@@ -19,7 +19,7 @@ const verifyToken = (userType) => async(req, res, next) => {
         if(userType && payload.userType !== userType) {
             return res.status(403).json({
                 message: "Forbidden. Invalid useType"
-            })
+            });
         };
         req.user = payload;
         next();
