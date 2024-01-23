@@ -19,7 +19,7 @@ module.exports.signup = async function(req, res, next){
         }).save();
         res.status(201).json({
             message: "Homeowner created successfully",
-            data : _.pick(homeowner, ["firstName", "lastName", "email", "phoneNumber", "address", "userType", "profilePhoto"]),
+            data : _.pick(homeowner, ["firstName", "lastName", "email", "phoneNumber", "address", "userType", "profilePhoto", "_id"]),
         });
     } catch (err) {
        next(err); 
@@ -36,7 +36,7 @@ module.exports.login = async function(req, res, next){
     let token = await user.generateToken();
     res.status(200).json({
         message : "User logged in successfully",
-        data : _.pick(user, ["firstName", "lastName", "email", "phoneNumber", "address", "userType", "profilePhoto"]),
+        data : _.pick(user, ["firstName", "lastName", "email", "phoneNumber", "address", "userType", "profilePhoto", "_id"]),
         token
     })
    } catch (err) {
