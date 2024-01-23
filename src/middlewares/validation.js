@@ -179,13 +179,11 @@ module.exports.validateQuote= function(req, res, next){
 
 module.exports.validateProduct = function(req, res, next){
     const schema = Joi.object({
-        supplierId: Joi.objectId().required(),
-        numberInStock : Joi.number().required(),
         unitPrice : Joi.number().required(),
+        numberInStock : Joi.number().required(),
         name : Joi.string().required(),
         brand : Joi.string().required(),
         category : Joi.string().required(),
-        status : Joi.string().required(),
         technicalSpecification : Joi.string().required(),
         description : Joi.string().required()
     });

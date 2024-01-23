@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3000;
 const cors = require("cors");
 const error = require("./src/middlewares/error");
 
-
+const app = express();
 connectToMongoDB();
 app.use(cors({ origin: '*'}));
 app.use(express.json());

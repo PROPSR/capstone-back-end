@@ -37,7 +37,7 @@ const productSchema = new mongoose.Schema({
     status : {
         type : String,
         enum : ["Available", "Out of stock"],
-        required : true
+        default: "Available"
     },
     supplier : {
         type : mongoose.Schema.Types.ObjectId,
