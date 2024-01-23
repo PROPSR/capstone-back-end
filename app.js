@@ -1,13 +1,5 @@
 const express = require("express");
-// const mongoose = require("mongoose")
 require("dotenv").config();
-// mongoose.connect(
-//     process.env.MONGO_CONNECTION_URL
-// ).then(() => {
-//     console.log("Database Connection successful");
-// }).catch(err => {
-//     console.log(err);
-// })
 const {connectToMongoDB} = require("./src/models/index");
 const app = express();
 const router = require("./src/routes");
