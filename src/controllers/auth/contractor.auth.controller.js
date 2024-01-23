@@ -61,7 +61,7 @@ module.exports.login = async function(req, res){
     
         const token = jwt.sign({
             id: contractor._id,
-            useType: "Contractor"
+            userType: "Contractor"
         }, process.env.JWT_SECRET, {
             expiresIn : "24h"
         });

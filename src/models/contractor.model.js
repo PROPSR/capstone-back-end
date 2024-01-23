@@ -63,6 +63,11 @@ const contractorSchema = new mongoose.Schema({
     scopeOfWork : {
         type : String,
         enum : ["Speific tasks", "Full project management"] 
+    },
+    profileStatus: {
+        type: String,
+        enum: ["Pending", "Complete"],
+        default: "Pending"
     }
 }, {
     timestamps: true
