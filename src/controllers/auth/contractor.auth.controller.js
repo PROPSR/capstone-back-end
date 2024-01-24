@@ -1,17 +1,21 @@
 const Contractor = require("../../models/contractor.model");
+const Supplier = require("../../models/supplier.model");
+const Homeowner = require("../../models/homeowner.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 module.exports.signup = async function(req, res){
     try {
         const { firstName, lastName, email, password, phoneNumber } = req.body;
+
+        const contractorExists = await Contractor.exists({ email });
+        const supplierExists = await Supplier.exists({ email });
+        const homeownerExists = await Homeowner.exists({ email });
     
-        const user = await Contractor.findOne({ email: email});
-        if(user) {
-            return res.status(400).json({
-                message: "Email Already In Use"
-            });
-        };
+        if (contractorExists || supplierExists || homeownerExists) {
+          return res.status(400).json({ message: 'Email already in use' });
+        }
+
         const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUNDS));
         const hash = bcrypt.hashSync(password, salt);
     
@@ -36,47 +40,5 @@ module.exports.signup = async function(req, res){
             success: false,
             message: "Contractor Registeration Failed",
           });
-    }
-};
-
-module.exports.login = async function(req, res){
-    try {
-        const { email, password } = req.body;
-
-        const contractor = await Contractor.findOne({ email: email});
-    
-        if(!contractor) {
-            return res.status(404).json({
-                success: false,
-                message: "contractor Not found"
-            })
-        }
-        const matchedPassword = bcrypt.compareSync(password, contractor.password);
-        if(!matchedPassword) {
-            console.log("Password is Incorrect");
-            res.status(400).json({
-                message: "Wrong Email or Password"
-            });
-        };
-    
-        const token = jwt.sign({
-            id: contractor._id,
-            userType: "Contractor"
-        }, process.env.JWT_SECRET, {
-            expiresIn : "24h"
-        });
-    
-        res.status(200).json({
-            success: true,
-            message: "Login Successful",
-            data: contractor,
-            token: token
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-          success: false,
-          message: "Contractor Login Failed",
-        });
     }
 };
