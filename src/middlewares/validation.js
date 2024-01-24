@@ -255,11 +255,9 @@ module.exports.validateProject = function(req, res, next){
 module.exports.validateOrder = function(req, res, next){
     const schema = Joi.object({
         supplierId: Joi.objectId().required(),
-        homeownerId: Joi.objectId().required(),
-        products: Joi.object().objectId().required(),
-        totalPrice : Joi.number().required(),
-        additionalCosts : Joi.array().number().required(),
-        status : Joi.string().required()
+        product: Joi.object().required(),
+        quantity : Joi.number().required(),
+        additionalCosts : Joi.object().required()
     });
 
     const {error} = schema.validate(req.body);

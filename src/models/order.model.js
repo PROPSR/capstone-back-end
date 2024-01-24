@@ -1,3 +1,4 @@
+const { number } = require("joi");
 const mongoose = require("mongoose");
 
 
@@ -10,22 +11,32 @@ const orderSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : "Homeowner"
     },
-    products :[
-        {
-            type : mongoose.Schema.Types.ObjectId,
-            ref : "Product"
-        },  
-    ],
+    product : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "Product"
+    },
+    unitPrice : {
+        type : Number,
+        required : true 
+    },
+    quantity : {
+        type : Number,
+        required : true
+    },
+    additionalCosts : {
+        deliveryFee : {
+            type : Number,
+            default : 0
+        },
+        installationFee: {
+            type : Number,
+            default : 0
+        }
+    },
     totalPrice : {
         type : Number,
         required : true
     },
-    additionalCosts:[
-        {
-            deliveryFee : Number,
-            installationFee :  Number
-        }
-    ],
     status : {
         type : String,
         enum : ["Pending", "Accepted", "Rejected", "Delivered"]

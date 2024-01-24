@@ -80,8 +80,8 @@ module.exports.getMyOrder = async function(req, res, next){
 
 module.exports.createOrder = async function(req, res, next){
     try {
-        let totalPrice;
-        const {supplier, products, additionalCosts, status} = req.body;
+        let totalPrice, totalAdditionalCosts = 0;
+        const {supplier, product, additionalCosts, quantity} = req.body;
 
         let homeowner = await Homeowner.findById(req.user.id);
         if(!homeowner) throw new Error(`Homeowner with provided ID ${req.user.id} doesn't exist`);
@@ -89,18 +89,21 @@ module.exports.createOrder = async function(req, res, next){
         let orderSupplier = await Supplier.findById(supplier);
         if(!orderSupplier) throw new Error(`Supplier with provided ID ${supplier} doesn't exist`);
 
-        products.forEach(async function(productId){
-            let product = await Product.findById(productId);
-            if(!product) throw new Error(`Product with provided ID ${productId} doesn't exist`);
-        });
-        //calculate total price
+        let orderedProduct = await Product.findById(product);
+        if(!orderedProduct) throw new Error(`Product with provided ID ${product.id} doesn't exist`);
+
+        totalAdditionalCosts = additionalCosts.deliveryFee + additionalCosts.installationFee;
+        totalPrice = (orderedProduct.unitPrice * quantity) + totalAdditionalCosts;
+       
         let newOrder = new Order({
             supplier,
-            homeowner,
-            products,
+            homeowner: req.user.id,
+            product,
+            unitPrice : orderedProduct.unitPrice,
+            quantity,
+            additionalCosts : totalAdditionalCosts,
             totalPrice,
-            additionalCosts,
-            status
+            status : "Pending"
         }).save();
 
         res.status(201).json({
