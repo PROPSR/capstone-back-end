@@ -45,6 +45,11 @@ const homeOwnerSchema = new Schema({
     },
     address : {
         type : String
+    },
+    profileStatus: {
+        type: String,
+        enum: ["Pending", "Complete"],
+        default: "Pending"
     }
 }, {
     timestamps: true

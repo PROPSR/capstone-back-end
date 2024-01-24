@@ -1,11 +1,15 @@
 const express = require("express");
 const orderRouter = express.Router();
-const { getOrders, getOrder, createOrder, updateOrder, deleteOrder } = require("../controllers/order.controller");
+const {verifyToken} = require("../middlewares/jwt");
+const {validateOrder} = require("../middlewares/validation");
+const {createOrder, updateOrder, cancelOrder, getAllOrders, getMyOrder, getMyOrders, getOrder } = require("../controllers/order.controller");
 
-orderRouter.get("/", getOrders);
-orderRouter.get("/:id", getOrder);
-orderRouter.post("/", createOrder);
-orderRouter.patch("/:id", updateOrder);
-orderRouter.delete("/:id", deleteOrder);
+orderRouter.get("/", verifyToken("Homeowner"), getMyOrders);
+orderRouter.get("/:id", verifyToken("Homeowner"), getMyOrder);
+orderRouter.post("/", verifyToken("Homeowner"), validateOrder, createOrder);
+orderRouter.patch("/:id/status", verifyToken("Supplier"), updateOrder);
+orderRouter.delete("/:id", verifyToken("Homeowner"), cancelOrder);
 
 module.exports = orderRouter;
+
+
