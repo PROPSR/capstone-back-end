@@ -6,6 +6,9 @@ const { validateSupplierSignup, validateLogin, validateSupplierUpdate } = requir
 const { verifyToken } = require("../middlewares/jwt");
 const { upload } = require("../config/multer")
 
+const { signup } = require("../controllers/auth/supplier.auth.controller");
+const { getSupplier, updateSupplier } = require("../controllers/supplier.controller");
+const { validateSupplierSignup, validateLogin, validateSupplierUpdate } = require("../middlewares/validation")
 
 supplierRouter.post("/signup", validateSupplierSignup, signup);
 supplierRouter.post("/login", validateLogin, login);

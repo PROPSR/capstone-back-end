@@ -9,7 +9,6 @@ const {upload} = require("../config/multer");
 
 
 homeownerRouter.post("/signup", validateHomeowner, signup);
-homeownerRouter.post("/login", validateLogin, login);
 homeownerRouter.get("/", verifyToken("Homeowner"), getHomeowner);
 homeownerRouter.patch("/update", verifyToken("Homeowner"), validateHomeownerUpdate, updateHomeowner);
 homeownerRouter.post("/logout");
