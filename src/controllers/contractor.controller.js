@@ -12,10 +12,11 @@ module.exports.getContractor = async function(req, res){
             });
         };
 
-        console.log(contractor);
+
+        console.log(project);
         res.status(200).json({
             success: true,
-            contractor: contractor
+            project: project
         });
 
     } catch (error) {
