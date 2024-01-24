@@ -35,7 +35,7 @@ module.exports.login = async function (req, res) {
         } else if (homeowner && bcrypt.compareSync(password, homeowner.password)) {
             let token = await homeowner.generateToken();
 
-            res.status(200).json({ success: true, message: "Login Successful", homeowner: homeowner, token: token });
+            res.status(200).json({ success: true, message: "Login Successful", token: token });
 
         } else {
             res.status(404).json({ message: 'Invalid Email Or Password' });
