@@ -62,9 +62,10 @@ module.exports.login = async function(req, res){
                 message: "Email or password is not correct"
             })
         }
-        const token = jwt.sign({ supplier }, process.env.TOKEN_SECRET, { expiresIn: "1h"} );
+        const token = jwt.sign({id: supplier._id, userType: "Supplier"}, process.env.JWT_SECRET, { expiresIn: "24h"} );
         res.status(200).json({
             message: "Supplier Logged In",
+            supplier: supplier,
             token: token
         })
     } catch (error) {
