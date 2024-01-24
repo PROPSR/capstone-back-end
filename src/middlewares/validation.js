@@ -177,7 +177,7 @@ module.exports.validateQuote= function(req, res, next){
 };
 
 
-module.exports.validateProduct = function(req, res, next){
+module.exports.validateProductCreation = function(req, res, next){
     const schema = Joi.object({
         unitPrice : Joi.number().required(),
         numberInStock : Joi.number().required(),
@@ -186,6 +186,28 @@ module.exports.validateProduct = function(req, res, next){
         category : Joi.string().required(),
         technicalSpecification : Joi.string().required(),
         description : Joi.string().required()
+    });
+
+    const {error} = schema.validate(req.body);
+    if(error){
+        res.status(400).json({
+            message : "An error occured",
+            error : error.details[0].message
+        });
+        return;
+    }
+    next();
+};
+
+module.exports.validateProductUpdate = function(req, res, next){
+    const schema = Joi.object({
+        unitPrice : Joi.number().optional(),
+        numberInStock : Joi.number().optional(),
+        name : Joi.string().optional(),
+        brand : Joi.string().optional(),
+        category : Joi.string().optional(),
+        technicalSpecification : Joi.string().optional(),
+        description : Joi.string().optional()
     });
 
     const {error} = schema.validate(req.body);
