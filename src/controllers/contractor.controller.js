@@ -20,7 +20,7 @@ module.exports.getContractor = async function(req, res){
         });
 
     } catch (error) {
-        consloe.log(error);
+        console.log(error);
         res.status(500).json({
             success: false,
             message: "Failed To Fetch Contractor Data"

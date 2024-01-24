@@ -59,7 +59,7 @@ module.exports.login = async function(req, res){
         const hashedPassword = supplier.password
         if(!(await bcrypt.compare(password + process.env.BCRYPT_PASSWORD, hashedPassword))) {
             return res.status(401).json({
-                message: "Email or password is not correct"
+                message: "Email or password is not correct",
             })
         }
         const token = jwt.sign({id: supplier._id, userType: "Supplier"}, process.env.JWT_SECRET, { expiresIn: "24h"} );
