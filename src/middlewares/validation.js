@@ -221,15 +221,12 @@ module.exports.validateProductUpdate = function(req, res, next){
     next();
 };
 
-module.exports.validateProject = function(req, res, next){
+module.exports.validateProjectCreation = function(req, res, next){
     const schema = Joi.object({
         name : Joi.string().required(),
         type : Joi.string().required(),
         budget : Joi.number().required(),
         description : Joi.string().required(),
-        homewnerId: Joi.objectId().required(),
-        assignedContractor: Joi.objectId().required(),
-        status : Joi.string().required(),
         accessibilityNeeds : Joi.string().required(),
         address : Joi.string().required(),
         projectPhase : Joi.string().required(),
@@ -251,6 +248,32 @@ module.exports.validateProject = function(req, res, next){
     next();
 };
 
+module.exports.validateProjectUpdate = function(req, res, next){
+    const schema = Joi.object({
+        name : Joi.string().optional(),
+        type : Joi.string().optional(),
+        budget : Joi.number().optional(),
+        description : Joi.string().optional(),
+        accessibilityNeeds : Joi.string().optional(),
+        address : Joi.string().optional(),
+        projectPhase : Joi.string().optional(),
+        materialRequirements : Joi.string().optional(),
+        permitsRequired : Joi.boolean().optional(),
+        permits : Joi.array().optional(),
+        timeline : Joi.object().optional(),
+    });
+    
+
+    const {error} = schema.validate(req.body);
+    if(error){
+        res.status(400).json({
+            message : "An error occured",
+            error : error.details[0].message
+        });
+        return;
+    }
+    next();
+};
 
 module.exports.validateOrder = function(req, res, next){
     const schema = Joi.object({

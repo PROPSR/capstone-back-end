@@ -22,8 +22,23 @@ module.exports.getAllOrders = async function(req, res, next){
     }
 };
 
+//Admin request for an order by its ID
+module.exports.getOrder = async function(req, res, next){
+    try {     
+        let order = await Order.findById(req.params.id);
+        if(!order) throw new Error("Order with provided ID doesn't exist");
+
+        res.status(200).json({
+            message : "Order retreived successfully",
+            data : order
+        });
+    } catch (err) {
+        next(err);    
+    }
+};
+
 //Get all orders for a homeowner
-module.exports.getMyOrders = async function(req, res, next){
+module.exports.getHomeownerOrders = async function(req, res, next){
     try {
         const page = req.query.page || 1;
         const limit = req.query.limit || 5;
@@ -43,23 +58,9 @@ module.exports.getMyOrders = async function(req, res, next){
     }
 };
 
-//Admin request for an order by its ID
-module.exports.getOrder = async function(req, res, next){
-    try {     
-        let order = await Order.findById(req.params.id);
-        if(!order) throw new Error("Order with provided ID doesn't exist");
-
-        res.status(200).json({
-            message : "Order retreived successfully",
-            data : order
-        });
-    } catch (err) {
-        next(err);    
-    }
-};
 
 //Retrieve an order from a homeowner by ID
-module.exports.getMyOrder = async function(req, res, next){
+module.exports.getHomeownerOrder = async function(req, res, next){
     try {     
         let homeowner = await Homeowner.findById(req.user.id);
         if(!homeowner) throw new Error("Homeowner with provided ID doesn't exist");
@@ -154,6 +155,46 @@ module.exports.cancelOrder = async function(req, res, next){
 
         res.status(200).json({
             message : "Order has been cancelled successfully"
+        });
+    } catch (err) {
+        next(err);    
+    }
+};
+
+//Supplier logs in and sees a list of orders
+module.exports.getSupplierOrders = async function(req, res, next){
+    try {
+        const page = req.query.page || 1;
+        const limit = req.query.limit || 5;
+        const skip = (page-1) * limit;
+       
+        let supplier = await Supplier.findById(req.user.id);
+        if(!supplier) throw new Error("Supplier with provided ID doesn't exist");
+
+        let orders = await Order.find({supplier : req.user.id}).skip(skip).limit(limit);
+
+        res.status(200).json({
+            message : "All orders retreived",
+            data : orders
+        });
+    } catch (err) {
+        next(err);    
+    }
+};
+
+module.exports.getSupplierOrder = async function(req, res, next){
+    try {     
+        let supplier = await Supplier.findById(req.user.id);
+        if(!supplier) throw new Error("Supplier with provided ID doesn't exist");
+
+        let order = await Order.findById(req.params.id);
+        if(!order) throw new Error("Order with provided ID doesn't exist");
+
+        if(order.supplier !== req.user.id) throw new Error("Requested order doesn't belong to the supplier");
+
+        res.status(200).json({
+            message : "Order retreived successfully",
+            data : order
         });
     } catch (err) {
         next(err);    
