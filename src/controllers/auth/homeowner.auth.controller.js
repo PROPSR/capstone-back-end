@@ -1,12 +1,19 @@
 const Homeowner = require("../../models/homeowner.model");
+const Contractor = require("../../models/contractor.model");
+const Supplier = require("../../models/supplier.model");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
 
 module.exports.signup = async function(req, res, next){
     try {
         const {firstName, lastName, email, password, address, phoneNumber} = req.body
-        let user = await Homeowner.findOne({email});
-        if (user) throw new Error("Email already exists");
+        const contractorExists = await Contractor.exists({ email });
+        const supplierExists = await Supplier.exists({ email });
+        const homeownerExists = await Homeowner.exists({ email });
+    
+        if (contractorExists || supplierExists || homeownerExists) {
+          return res.status(400).json({ message: 'Email already in use' });
+        }
 
         let homeowner = await new Homeowner({
             firstName,
@@ -26,20 +33,4 @@ module.exports.signup = async function(req, res, next){
     }
 };
 
-module.exports.login = async function(req, res, next){
-   try {
-    let user = await Homeowner.findOne({email : req.body.email});
-    if (!user) throw new Error("Email doesn't exist, Please sign up");
-    let validatedUser = await bcrypt.compare(req.body.password, user.password );
-    if (!validatedUser) throw new Error ("Password is incorrect");
 
-    let token = await user.generateToken();
-    res.status(200).json({
-        message : "User logged in successfully",
-        data : _.pick(user, ["firstName", "lastName", "email", "phoneNumber", "address", "userType", "profilePhoto", "_id"]),
-        token
-    })
-   } catch (err) {
-      next(err); 
-   } 
-};
