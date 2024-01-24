@@ -1,8 +1,8 @@
 const express = require("express");
 const homeownerRouter = express.Router();
-const { signup, login } = require("../controllers/auth/homeowner.auth.controller");
+const { signup} = require("../controllers/auth/homeowner.auth.controller");
 const { getHomeowner, updateHomeowner, deleteHomeowner, uploadPhoto } = require("../controllers/homeowner.controller");
-const {validateHomeowner, validateLogin, validateHomeownerUpdate} = require("../middlewares/validation");
+const {validateHomeowner, validateHomeownerUpdate} = require("../middlewares/validation");
 const {verifyToken} = require("../middlewares/jwt");
 const {upload} = require("../config/multer");
 

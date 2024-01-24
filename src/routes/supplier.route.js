@@ -1,8 +1,8 @@
 const express = require("express");
 const supplierRouter = express.Router();
 const { signup } = require("../controllers/auth/supplier.auth.controller");
+const { validateSupplierSignup, validateSupplierUpdate } = require("../middlewares/validation")
 const { getSupplier, updateSupplier, uploadProfilePicture, deleteSupplier } = require("../controllers/supplier.controller");
-const { validateSupplierSignup, validateLogin, validateSupplierUpdate } = require("../middlewares/validation");
 const { verifyToken } = require("../middlewares/jwt");
 const { upload } = require("../config/multer")
 
