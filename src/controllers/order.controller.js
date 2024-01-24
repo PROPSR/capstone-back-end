@@ -96,13 +96,13 @@ module.exports.createOrder = async function(req, res, next){
         totalAdditionalCosts = additionalCosts.deliveryFee + additionalCosts.installationFee;
         totalPrice = (orderedProduct.unitPrice * quantity) + totalAdditionalCosts;
        
-        let newOrder = new Order({
+        let newOrder = await new Order({
             supplier,
             homeowner: req.user.id,
             product,
             unitPrice : orderedProduct.unitPrice,
             quantity,
-            additionalCosts : totalAdditionalCosts,
+            additionalCosts,
             totalPrice,
             status : "Pending"
         }).save();

@@ -179,6 +179,7 @@ module.exports.validateQuote= function(req, res, next){
 
 module.exports.validateProductCreation = function(req, res, next){
     const schema = Joi.object({
+        supplier : Joi.objectId().required(),
         unitPrice : Joi.number().required(),
         numberInStock : Joi.number().required(),
         name : Joi.string().required(),
@@ -277,10 +278,10 @@ module.exports.validateProjectUpdate = function(req, res, next){
 
 module.exports.validateOrder = function(req, res, next){
     const schema = Joi.object({
-        supplierId: Joi.objectId().required(),
-        product: Joi.object().required(),
+        supplier: Joi.objectId().required(),
+        product: Joi.objectId().required(),
         quantity : Joi.number().required(),
-        additionalCosts : Joi.object().required()
+        additionalCosts : Joi.object()
     });
 
     const {error} = schema.validate(req.body);
