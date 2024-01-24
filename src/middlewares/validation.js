@@ -179,7 +179,6 @@ module.exports.validateQuote= function(req, res, next){
 
 module.exports.validateProductCreation = function(req, res, next){
     const schema = Joi.object({
-        supplier : Joi.objectId().required(),
         unitPrice : Joi.number().required(),
         numberInStock : Joi.number().required(),
         name : Joi.string().required(),
