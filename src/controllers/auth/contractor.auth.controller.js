@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 
 module.exports.signup = async function(req, res){
     try {
-        const { firstName, lastName, email, password, phoneNumber } = req.body;
+        const { firstName, lastName, email, password, phoneNumber, address, city, state } = req.body;
 
         const contractorExists = await Contractor.exists({ email });
         const supplierExists = await Supplier.exists({ email });
@@ -25,6 +25,9 @@ module.exports.signup = async function(req, res){
             email: email,
             password: hash,
             phoneNumber: phoneNumber,
+            businessAddress : address,
+            state,
+            city,
             userType: "Contractor"
         });
 

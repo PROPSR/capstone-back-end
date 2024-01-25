@@ -11,7 +11,7 @@ const contractorSchema = new mongoose.Schema({
     password: {
         type : String,
         required : true,
-        minLength : 6
+        minLength : 8
     },
     profilePhoto: {
         type: String,
@@ -43,6 +43,12 @@ const contractorSchema = new mongoose.Schema({
     },
     businessAddress : {
         type : String,
+    },
+    city:{
+        type : String
+    },
+    state:{
+        type : String
     },
     commsPreference : {
         type : String,

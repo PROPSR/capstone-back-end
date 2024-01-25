@@ -6,9 +6,11 @@ module.exports.validateHomeowner = function(req, res, next){
         firstName : Joi.string().required().min(0).max(255).trim(),
         lastName : Joi.string().required().min(0).max(255).trim(),
         email : Joi.string().email().required().trim().lowercase(),
-        password : Joi.string().required().min(6),
+        password : Joi.string().required().min(8),
         userType : Joi.string(),
         address : Joi.string(),
+        city : Joi.string(),
+        state : Joi.string(),
         phoneNumber : Joi.string().required()
     });
 
@@ -28,9 +30,11 @@ module.exports.validateHomeownerUpdate = function(req, res, next){
         firstName : Joi.string().optional().min(0).max(255).trim(),
         lastName : Joi.string().optional().min(0).max(255).trim(),
         email : Joi.string().email().optional().trim().lowercase(),
-        password : Joi.string().optional().min(6),
+        password : Joi.string().optional().min(8),
         userType : Joi.string(),
         address : Joi.string().optional(),
+        city : Joi.string(),
+        state : Joi.string(),
         phoneNumber : Joi.string().optional()
     });
 
@@ -50,9 +54,12 @@ module.exports.validateContractorSignup = function(req, res, next){
         firstName : Joi.string().required().min(0).max(255).trim(),
         lastName : Joi.string().required().min(0).max(255).trim(),
         email : Joi.string().email().required().trim().lowercase(),
-        password : Joi.string().required().min(6),
+        password : Joi.string().required().min(8),
         phoneNumber : Joi.string().required().min(9).max(13),
         userType : Joi.string().optional(),
+        address : Joi.string().optional(),
+        city : Joi.string(),
+        state : Joi.string(),
     });
 
     const {error} = schema.validate(req.body);
@@ -71,11 +78,13 @@ module.exports.validateContractorUpdate = function(req, res, next){
         firstName : Joi.string().optional().min(0).max(255).trim(),
         lastName : Joi.string().optional().min(0).max(255).trim(),
         email : Joi.string().email().optional().trim().lowercase(),
-        password : Joi.string().optional().min(6),
+        password : Joi.string().optional().min(8),
         phoneNumber : Joi.string().optional().min(9).max(13),
         userType : Joi.string().optional(),
         yearsOfExperience : Joi.string().optional(),
         businessAddress : Joi.string().optional(),
+        city : Joi.string().optional(),
+        state : Joi.string().optional(),
         commsPreference : Joi.string().optional(),
         refrences : Joi.string().optional(),
         workSchedule : Joi.string().optional(),
@@ -98,7 +107,7 @@ module.exports.validateContractorUpdate = function(req, res, next){
 module.exports.validateLogin = function(req, res, next){
     const schema = Joi.object({
         email : Joi.string().email().required().trim().lowercase(),
-        password : Joi.string().required().min(6),
+        password : Joi.string().required().min(8),
     });
 
     const {error} = schema.validate(req.body);
@@ -117,9 +126,12 @@ module.exports.validateSupplierSignup = function(req, res, next){
         firstName : Joi.string().required().min(0).max(255).trim(),
         lastName : Joi.string().required().min(0).max(255).trim(),
         email : Joi.string().email().required().trim().lowercase(),
-        password : Joi.string().required().min(6),
+        password : Joi.string().required().min(8),
         phoneNumber : Joi.string().required().min(9).max(13),
         userType : Joi.string().optional(),
+        address : Joi.string(),
+        city : Joi.string(),
+        state : Joi.string()
     });
 
     const {error} = schema.validate(req.body);
@@ -135,12 +147,14 @@ module.exports.validateSupplierSignup = function(req, res, next){
 
 module.exports.validateSupplierUpdate = function(req, res, next){
     const schema = Joi.object({
-        firstName : Joi.string().required().min(0).max(255).trim(),
-        lastName : Joi.string().required().min(0).max(255).trim(),
-        email : Joi.string().email().required().trim().lowercase(),
-        password : Joi.string().required().min(6),
-        userType : Joi.string().required(),
-        businessAddress : Joi.string().required()
+        firstName : Joi.string().optional().min(0).max(255).trim(),
+        lastName : Joi.string().optional().min(0).max(255).trim(),
+        email : Joi.string().email().optional().trim().lowercase(),
+        password : Joi.string().optional().min(8),
+        userType : Joi.string().optional(),
+        businessAddress : Joi.string().optional(),
+        city : Joi.string().optional(),
+        state : Joi.string().optional(),
     });
 
     const {error} = schema.validate(req.body);
