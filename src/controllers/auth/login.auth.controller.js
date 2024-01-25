@@ -20,7 +20,7 @@ module.exports.login = async function (req, res) {
                 expiresIn: "24h"
             });
 
-            res.status(200).json({ success: true, message: "Login Successful", contractor: contractor, token: token });
+            res.status(200).json({ success: true, message: "Login Successful", token: token });
 
         } else if (supplier && bcrypt.compareSync(password, supplier.password)) {
             const token = jwt.sign({
@@ -30,7 +30,7 @@ module.exports.login = async function (req, res) {
                 expiresIn: "24h"
             });
 
-            res.status(200).json({ success: true, message: "Login Successful", supplier: supplier, token: token });
+            res.status(200).json({ success: true, message: "Login Successful", token: token });
 
         } else if (homeowner && bcrypt.compareSync(password, homeowner.password)) {
             let token = await homeowner.generateToken();
