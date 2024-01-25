@@ -1,7 +1,7 @@
 const express = require("express");
 const homeownerRouter = express.Router();
 const { signup} = require("../controllers/auth/homeowner.auth.controller");
-const { getHomeowner, updateHomeowner, deleteHomeowner, uploadPhoto, getOrder, getOrders,cancelOrder, createOrder, getProject, getProjects, deleteProject, confirmOrder, updateProject } = require("../controllers/homeowner.controller");
+const { getHomeowner, updateHomeowner, deleteHomeowner, uploadPhoto, getOrder, getOrders,cancelOrder, createOrder, getProject, getProjects, deleteProject, confirmOrder, updateProject, assignContractor } = require("../controllers/homeowner.controller");
 const {validateHomeowner, validateHomeownerUpdate, validateOrder, validateProjectUpdate} = require("../middlewares/validation");
 const {verifyToken} = require("../middlewares/jwt");
 const {upload} = require("../config/multer");
@@ -21,5 +21,7 @@ homeownerRouter.get("/projects",verifyToken("Homeowner"), getProjects);
 homeownerRouter.get("/projects/:id",verifyToken("Homeowner"), getProject);
 homeownerRouter.patch("/orders/:id/confirm",verifyToken("Homeowner"), confirmOrder);
 homeownerRouter.patch("/projects/:id", verifyToken("Homeowner"), validateProjectUpdate, updateProject);
+homeownerRouter.patch("/projects/:id/assign",verifyToken("Homeowner"), assignContractor);
+
 
 module.exports = homeownerRouter;

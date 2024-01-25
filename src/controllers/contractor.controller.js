@@ -1,5 +1,6 @@
 const { cloudinary } = require("../config/cloudinary");
 const Contractor = require("../models/contractor.model");
+const Project = require("../models/project.model");
 
 module.exports.getContractor = async function(req, res){
     try {
@@ -108,4 +109,43 @@ module.exports.deleteContractor = async function(req, res){
           message: "Could Not Delete Contractor Data",
         });
     };
+};
+
+module.exports.getAssignedProjects = async function(req, res, next){
+    try {
+        const page = req.query.page || 1;
+        const limit = req.query.limit || 5;
+        const skip = (page-1) * limit;
+       
+        let contractor = await Contractor.findById(req.user.id);
+        if(!contractor) throw new Error("Contractor with provided ID doesn't exist");
+
+        let assignedProjects = await Project.find({assignedContractor : req.user.id}).skip(skip).limit(limit);
+
+        res.status(200).json({
+            message : "All assigned projects retreived",
+            data : assignedProjects
+        });
+    } catch (err) {
+        next(err);    
+    } 
+};
+
+module.exports.getAssignedProject = async function(req, res, next){
+    try {     
+        let contractor = await Contractor.findById(req.user.id);
+        if(!contractor) throw new Error("Contractor with provided ID doesn't exist");
+
+        let project = await Project.findById(req.params.id);
+        if(!project) throw new Error("Project with provided ID doesn't exist");
+
+        if(project.assignedContractor != req.user.id) throw new Error("Requested project is not assigned to the contractor");
+
+        res.status(200).json({
+            message : "Project retreived successfully",
+            data : project
+        });
+    } catch (err) {
+        next(err);    
+    }
 };

@@ -3,6 +3,7 @@ const Order = require("../models/order.model");
 const Supplier = require("../models/supplier.model");
 const Product = require("../models/product.model");
 const Project = require("../models/project.model");
+const Contractor = require("../models/contractor.model");
 
 
 module.exports.getHomeowner = async function(req, res, next){
@@ -273,4 +274,33 @@ module.exports.confirmOrder = async function(req, res, next){
     } catch (err) {
        next(err); 
     }
+};
+
+//Assign Contractor
+
+module.exports.assignContractor = async function(req, res, next){
+    try {
+        let projectId = req.params.id;
+        let {contractorId} = req.body;
+
+        let homeowner = await Homeowner.findById(req.user.id);
+        if(!homeowner) throw new Error("Homeowner with provided ID doesn't exist");
+
+        let project = await Project.findById(projectId);
+        if(!project) throw new Error(`Project with provided ID ${projectId} doesn't exist`); 
+        if(project.homeowner != req.user.id) throw new Error("Requested project doesn't belong to the homeowner");
+
+        let contractor = await Contractor.findById(contractorId);
+        if(!contractor) throw new Error("Contractor with provided ID doesn't exist");
+
+        let updatedProject = await Project.findByIdAndUpdate({projectId}, {$set : {assignedContractor : contractorId, status : "Assigned"}}, {new : true});
+
+        res.status(200).json({
+            message : "Project assigned successfully",
+            data : updatedProject
+        });
+
+    } catch (err) {
+       next(err); 
+    }  
 };

@@ -9,6 +9,4 @@ projectRouter.get("/:id", getProject);
 projectRouter.get("/marketplace", projectsMarketplace);
 projectRouter.post("/", verifyToken("Homeowner"), validateProjectCreation, createProject);
 
-
-
 module.exports = projectRouter;
