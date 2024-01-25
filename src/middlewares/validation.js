@@ -8,7 +8,7 @@ module.exports.validateHomeowner = function(req, res, next){
         email : Joi.string().email().required().trim().lowercase(),
         password : Joi.string().required().min(6),
         userType : Joi.string(),
-        address : Joi.string().required(),
+        address : Joi.string(),
         phoneNumber : Joi.string().required()
     });
 
