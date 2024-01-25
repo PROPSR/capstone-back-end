@@ -74,6 +74,11 @@ const contractorSchema = new mongoose.Schema({
         type: String,
         enum: ["Pending", "Complete"],
         default: "Pending"
+    },
+    isEmailVerified: {
+        type: Boolean,
+        enum: [true, false],
+        default: false
     }
 }, {
     timestamps: true

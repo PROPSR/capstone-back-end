@@ -1,6 +1,9 @@
 const Contractor = require("../../models/contractor.model");
 const Supplier = require("../../models/supplier.model");
 const Homeowner = require("../../models/homeowner.model");
+const Otp = require("../../models/otp.model");
+const { generateOtp } = require("../../utilities/otpGenerator");
+const {emailVerification } = require("../../utilities/mails");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -32,10 +35,23 @@ module.exports.signup = async function(req, res){
         });
 
         await newContractor.save();
+
+        const otp = generateOtp();
+        const newOtp = new Otp({
+          userId: newContractor._id,
+          email: newContractor.email,
+          otp: otp,
+          type: "Email-Verification",
+          userType: "Contractor"
+        });
+        await newOtp.save();
+        await emailVerification(newOtp.email, newOtp.otp);
+
         res.status(200).json({
             success: true,
             message: "Contractor Registered Successfully",
-            data: newContractor
+            data: newContractor,
+            otp: newOtp.otp
           });
     } catch (error) {
         console.log(error);

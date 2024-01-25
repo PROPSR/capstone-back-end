@@ -48,6 +48,16 @@ const supplierSchema = new mongoose.Schema({
     state:{
         type : String
     },
+    profileStatus: {
+        type: String,
+        enum: ["Pending", "Complete"],
+        default: "Pending"
+    },
+    isEmailVerified: {
+        type: Boolean,
+        enum: [true, false],
+        default: false
+    }
 }, {
     timestamps: true
 });
