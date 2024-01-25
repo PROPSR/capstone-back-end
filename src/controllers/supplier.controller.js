@@ -53,7 +53,7 @@ module.exports.updateSupplier = async function(req, res){
     };
 };
 
-module.exports.uploadProfilePicture = async function(req, res){
+module.exports.uploadProfilePhoto = async function(req, res){
     try {
         const id = req.user.id;
         const supplier = await Supplier.findById(id);
@@ -62,13 +62,13 @@ module.exports.uploadProfilePicture = async function(req, res){
                 message: "Supplier not found"
             });
         };
-        const profilePicture = req.file;
-        let profilePictureUrl;
-        if(profilePicture) {
-            profilePictureUrl = profilePicture.path;
+        const profilePhoto = req.file;
+        let profilePhotoUrl;
+        if(profilePhoto) {
+            profilePhotoUrl = profilePhoto.path;
         };
 
-        const supplierPicture = await Supplier.findByIdAndUpdate(id, {profilePicture: profilePictureUrl}, {new: true}).select("-password");
+        const supplierPicture = await Supplier.findByIdAndUpdate(id, {profilePhoto: profilePhotoUrl}, {new: true}).select("-password");
         res.status(200).json({
             message: "Supplier profile picture upload successful",
             supplier: supplierPicture
