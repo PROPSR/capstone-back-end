@@ -11,7 +11,7 @@ const supplierSchema = new mongoose.Schema({
     password: {
         type : String,
         required : true,
-        minLength : 6
+        minLength : 8
     },
     profilePhoto: {
         type: String,
@@ -41,7 +41,13 @@ const supplierSchema = new mongoose.Schema({
     businessAddress : {
         type : String,
         required : false
-    }
+    },
+    city:{
+        type : String
+    },
+    state:{
+        type : String
+    },
 }, {
     timestamps: true
 });

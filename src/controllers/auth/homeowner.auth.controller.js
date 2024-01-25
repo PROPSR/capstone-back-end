@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 
 module.exports.signup = async function(req, res, next){
     try {
-        const {firstName, lastName, email, password, address, phoneNumber} = req.body
+        const {firstName, lastName, email, password, address, phoneNumber, city, state} = req.body
         const contractorExists = await Contractor.exists({ email });
         const supplierExists = await Supplier.exists({ email });
         const homeownerExists = await Homeowner.exists({ email });
@@ -21,12 +21,14 @@ module.exports.signup = async function(req, res, next){
             email,
             password,
             address,
+            city,
+            state,
             phoneNumber,
             userType : "Homeowner"
         }).save();
         res.status(201).json({
             message: "Homeowner created successfully",
-            data : _.pick(homeowner, ["firstName", "lastName", "email", "phoneNumber", "address", "userType", "profilePhoto", "_id"]),
+            data : _.pick(homeowner, ["firstName", "lastName", "email", "phoneNumber", "address", "userType", "profilePhoto", "_id", "city", "state"]),
         });
     } catch (err) {
        next(err); 

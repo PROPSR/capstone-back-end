@@ -16,7 +16,7 @@ const homeOwnerSchema = new Schema({
     password: {
         type : String,
         required : true,
-        minLength : 6
+        minLength : 8
     },
     profilePhoto: {
         type: String,
@@ -44,6 +44,12 @@ const homeOwnerSchema = new Schema({
         required : true
     },
     address : {
+        type : String
+    },
+    city:{
+        type : String
+    },
+    state:{
         type : String
     },
     profileStatus: {

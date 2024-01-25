@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken")
 
 module.exports.signup = async function(req, res){
     try {
-        const { firstName, lastName, phoneNumber, email, password } = req.body;
+        const { firstName, lastName, phoneNumber, email, password, address, state, city } = req.body;
         if (!(firstName && lastName && phoneNumber && email && password)) {
             return res.status(400).send(`All fields are mandatory`);
           }
@@ -29,6 +29,9 @@ module.exports.signup = async function(req, res){
             phoneNumber: phoneNumber,
             email: email,
             password: hashedPassword,
+            businessAddress:address,
+            state,
+            city,
             userType: "Supplier"
         })
 
