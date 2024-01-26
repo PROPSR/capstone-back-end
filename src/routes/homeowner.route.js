@@ -20,7 +20,7 @@ homeownerRouter.delete("/projects/:id", verifyToken("Homeowner"),deleteProject);
 homeownerRouter.get("/projects",verifyToken("Homeowner"), getProjects);
 homeownerRouter.get("/projects/:id",verifyToken("Homeowner"), getProject);
 homeownerRouter.patch("/orders/:id/confirm",verifyToken("Homeowner"), confirmOrder);
-homeownerRouter.patch("/projects/:id", verifyToken("Homeowner"), validateProjectUpdate, updateProject);
+homeownerRouter.patch("/projects/:id", verifyToken("Homeowner"), upload('project').array("images"), validateProjectUpdate, updateProject);
 homeownerRouter.patch("/projects/:id/assign",verifyToken("Homeowner"), assignContractor);
 
 

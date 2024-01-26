@@ -46,7 +46,7 @@ const passwordReset = async ( email, OTP) => {
     return await sendEmail(
         "PropSqr <propsqr@outlook.com>",
         email,
-        "Email Verification",
+        "Password Reset",
         html,
         "propsqr@outlook.com"
     );
