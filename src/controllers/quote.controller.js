@@ -72,7 +72,7 @@ module.exports.getContractorQuotes = async function (req, res) {
 module.exports.getContractorQuote = async function (req, res) {
     try {
         const id = req.user.id;
-        const quoteId = request.params.id;
+        const quoteId = req.params.id;
         const contractor = await Contractor.findById(id);
         if (!contractor) {
             return res.status(404).json({
