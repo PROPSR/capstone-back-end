@@ -12,7 +12,7 @@ const emailVerification = async ( email, OTP) => {
         <p>Please use the otp below to verify your email address </p>
         <h1 style="color: #007bff; font-size: 36px; margin: 10px;">${OTP}</h1>
         <p>Please keep this code secure and do not share it with anyone.</p>
-        <p>If you did not request make this request, please ignore this email.</p>
+        <p>If you did not make this request, please ignore this email.</p>
         <p>Best Regards,<br>PropSqr</p>
       </div>
     `;
