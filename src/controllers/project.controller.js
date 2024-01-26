@@ -96,15 +96,4 @@ module.exports.createProject = async function(req, res, next){
     } 
 };
 
-module.exports.assignContractor = async function(req, res, next){
-    
-};
-
-module.exports.getContractorAssignedProjects = async function(req, res, next){
- 
-};
-
-module.exports.getContractorAssignedProject = async function(req, res, next){
- 
-};
 
