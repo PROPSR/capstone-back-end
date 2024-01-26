@@ -2,6 +2,9 @@ const Homeowner = require("../../models/homeowner.model");
 const Contractor = require("../../models/contractor.model");
 const Supplier = require("../../models/supplier.model");
 const _ = require("lodash");
+const Otp = require("../../models/otp.model");
+const { generateOtp } = require("../../utilities/otpGenerator");
+const {emailVerification } = require("../../utilities/mails");
 const bcrypt = require("bcrypt");
 
 module.exports.signup = async function(req, res, next){
@@ -26,9 +29,22 @@ module.exports.signup = async function(req, res, next){
             phoneNumber,
             userType : "Homeowner"
         }).save();
+
+        const otp = generateOtp();
+        const newOtp = new Otp({
+          userId: homeowner._id,
+          email: homeowner.email,
+          otp: otp,
+          type: "Email-Verification",
+          userType: "Homeowner"
+        });
+        await newOtp.save();
+        await emailVerification(newOtp.email, newOtp.otp);
+
         res.status(201).json({
             message: "Homeowner created successfully",
             data : _.pick(homeowner, ["firstName", "lastName", "email", "phoneNumber", "address", "userType", "profilePhoto", "_id", "city", "state"]),
+            otp: newOtp.otp
         });
     } catch (err) {
        next(err); 

@@ -56,6 +56,11 @@ const homeOwnerSchema = new Schema({
         type: String,
         enum: ["Pending", "Complete"],
         default: "Pending"
+    },
+    isEmailVerified: {
+        type: Boolean,
+        enum: [true, false],
+        default: false
     }
 }, {
     timestamps: true
