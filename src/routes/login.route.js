@@ -5,7 +5,7 @@ const loginRouter = Router();
 
 loginRouter.post("/login", validateLogin, login);
 loginRouter.post("/sendpasswordresetotp", sendPasswordResetOtp);
-loginRouter.post("/resetpassword/:id", resetPassword);
+loginRouter.patch("/resetpassword/:id", resetPassword);
 
 
 module.exports = loginRouter;
