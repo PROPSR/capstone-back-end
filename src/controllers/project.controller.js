@@ -1,5 +1,6 @@
 const Project = require("../models/project.model");
 const Homeowner = require("../models/homeowner.model");
+const mongoose = require("mongoose");
 
 //Admin getting all projects
 module.exports.listProjects = async function(req, res, next){
@@ -64,10 +65,12 @@ module.exports.projectsMarketplace = async function(req, res, next){
 
 module.exports.createProject = async function(req, res, next){    
     try {
-        const {name, type, description, budget, timeline, permitsRequired, permits, materialRequirements, projectPhase,address, accessibilityNeeds, images } = req.body;
+        const {name, type, description, budget, timeline, permitsRequired, permits, materialRequirements, projectPhase,address, accessibilityNeeds } = req.body;
 
         let homeowner = await Homeowner.findById(req.user.id);
         if(!homeowner) throw new Error(`Homeowner with provided ID ${req.user.id} doesn't exist`);
+        const images = req.files ? req.files.map(file => file.path) : [];
+        const imageWithIds = images.map(path => ({_id: new mongoose.Types.ObjectId(), path}));
 
         let newProject = new Project({
             name,
@@ -81,7 +84,7 @@ module.exports.createProject = async function(req, res, next){
             projectPhase,
             address,
             accessibilityNeeds,
-            images,
+            images: imageWithIds,
             homeowner : req.user.id
         });
 
