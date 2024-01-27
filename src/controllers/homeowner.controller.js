@@ -4,6 +4,7 @@ const Supplier = require("../models/supplier.model");
 const Product = require("../models/product.model");
 const Project = require("../models/project.model");
 const Contractor = require("../models/contractor.model");
+const { default: mongoose } = require("mongoose");
 
 
 module.exports.getHomeowner = async function(req, res, next){
@@ -243,7 +244,26 @@ module.exports.updateProject = async function(req, res, next){
         if(!project) throw new Error(`Project with provided ID ${projectId} doesn't exist`);
 
         if(project.homeowner != req.user.id) throw new Error("Requested project doesn't belong to the homeowner");
-        let updatedProject = await Order.findByIdAndUpdate(projectId, {$set : req.body}, {new : true});
+
+        let existingImages = project.images;
+        let newImages = req.files ? req.files.map(file =>({_id: new mongoose.Types.ObjectId(), path: file.path})): [];
+        let updatedImages = [...existingImages, ...newImages];
+        const {name, type, description, budget, timeline, permitsRequired, permits, materialRequirements, projectPhase,address, accessibilityNeeds } = req.body;
+
+        let updatedProject = await Order.findByIdAndUpdate(projectId, {
+            name,
+            type,
+            description,
+            budget,
+            timeline,
+            permitsRequired,
+            permits,
+            materialRequirements,
+            projectPhase,
+            address,
+            accessibilityNeeds,
+            images: updatedImages,
+        }, {new : true});
         
         res.status(200).json({
             message : "Project updated successfully",
