@@ -11,66 +11,50 @@ module.exports.login = async function (req, res) {
     try {
         const { email, password } = req.body;
 
-        const contractor = await Contractor.findOne({ email: email });
-        const supplier = await Supplier.findOne({ email: email });
-        const homeowner = await Homeowner.findOne({ email: email });
-
-        let user;
-
-        if (contractor) {
-            user = contractor;
-        } else if (supplier) {
-            user = supplier;
-        } else if (homeowner) {
-            user = homeowner;
-        }
+        const user = await Contractor.findOne({ email: email }) || await Supplier.findOne({ email: email }) || await Homeowner.findOne({ email: email });
 
         if (!user) {
             res.status(404).json({ message: "User Not Found" });
         } else if (user.isEmailVerified === false) {
             res.status(400).json({ success: false, message: "Email Not Verified" });
         } else {
-            if (contractor && bcrypt.compareSync(password, contractor.password)) {
-                const token = jwt.sign({
-                    id: contractor._id,
-                    userType: "Contractor"
-                }, process.env.JWT_SECRET, {
-                    expiresIn: "24h"
-                });
-
-                res.status(200).json({ success: true, message: "Login Successful", token: token });
-
-            } else if (supplier && bcrypt.compareSync(password, supplier.password)) {
-                const token = jwt.sign({
-                    id: supplier._id,
-                    userType: "Supplier"
-                }, process.env.JWT_SECRET, {
-                    expiresIn: "24h"
-                });
-
-                res.status(200).json({ success: true, message: "Login Successful", token: token });
-
-            } else if (homeowner && bcrypt.compareSync(password, homeowner.password)) {
-                let token = await homeowner.generateToken();
-
-                res.status(200).json({ success: true, message: "Login Successful", token: token });
-            } else {
-                const otp = generateOtp();
-                const newOtp = new Otp({
-                    userId: user._id,
-                    email: user.email,
-                    otp: otp,
-                    type: "Password-Reset",
-                    userType: user.constructor.modelName
-                });
-                await newOtp.save();
-                await passwordReset(newOtp.email, newOtp.otp);
-                res.status(200).json({
-                    success: true,
-                    message: "Password Reset Mail Sent Successfully",
-                    data: user,
-                    otp: newOtp.otp
-                });
+            // Continue with the login logic based on the user type
+            if (user instanceof Contractor) {
+                if (bcrypt.compareSync(password, user.password)) {
+                    const token = jwt.sign({
+                        id: user._id,
+                        userType: "Contractor"
+                    }, process.env.JWT_SECRET, {
+                        expiresIn: "24h"
+                    });
+                    res.status(200).json({ success: true, message: "Login Successful", token: token });
+                } else {
+                    res.status(401).json({ success: false, message: "Invalid Password" });
+                }
+            } else if (user instanceof Supplier) {
+                if (bcrypt.compareSync(password, user.password)) {
+                    const token = jwt.sign({
+                        id: user._id,
+                        userType: "Supplier"
+                    }, process.env.JWT_SECRET, {
+                        expiresIn: "24h"
+                    });
+                    res.status(200).json({ success: true, message: "Login Successful", token: token });
+                } else {
+                    res.status(401).json({ success: false, message: "Invalid Password" });
+                }
+            } else if (user instanceof Homeowner) {
+                if (bcrypt.compareSync(password, user.password)) {
+                    const token = jwt.sign({
+                        id: user._id,
+                        userType: "Homeowner"
+                    }, process.env.JWT_SECRET, {
+                        expiresIn: "24h"
+                    });
+                    res.status(200).json({ success: true, message: "Login Successful", token: token });
+                } else {
+                    res.status(401).json({ success: false, message: "Invalid Password" });
+                }
             }
         }
     } catch (error) {
@@ -81,6 +65,7 @@ module.exports.login = async function (req, res) {
         });
     }
 };
+
 
 
 module.exports.sendPasswordResetOtp = async function(req, res) {
