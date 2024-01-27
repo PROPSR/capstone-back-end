@@ -15,7 +15,9 @@ module.exports.login = async function (req, res) {
         const supplier = await Supplier.findOne({ email: email });
         const homeowner = await Homeowner.findOne({ email: email });
 
-        if (contractor && bcrypt.compareSync(password, contractor.password)) {
+        if(!contractor || !homeowner || !supplier) {
+            return res.status(404).json({ message: "User Not Found' });
+        }else if (contractor && bcrypt.compareSync(password, contractor.password)) {
             const token = jwt.sign({
                 id: contractor._id,
                 userType: "Contractor"
