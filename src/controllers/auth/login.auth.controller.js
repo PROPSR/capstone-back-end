@@ -16,8 +16,12 @@ module.exports.login = async function (req, res) {
         const homeowner = await Homeowner.findOne({ email: email });
 
         if(!contractor || !homeowner || !supplier) {
-            return res.status(404).json({ message: "User Not Found' });
-        }else if (contractor && bcrypt.compareSync(password, contractor.password)) {
+             res.status(404).json({ message: "User Not Found' });
+        }else if (contractor.isEmailVerified === false || supplier.isEmailVerified === false || homeowner.isEmailVerified === false) {
+            res.status(400).json({ success: false, message: "Email Not Verified"});
+        }
+                                  
+        else if (contractor && bcrypt.compareSync(password, contractor.password)) {
             const token = jwt.sign({
                 id: contractor._id,
                 userType: "Contractor"
@@ -41,8 +45,6 @@ module.exports.login = async function (req, res) {
             let token = await homeowner.generateToken();
 
             res.status(200).json({ success: true, message: "Login Successful", token: token });
-        }else if (contractor.isEmailVerified === false || supplier.isEmailVerified === false || homeowner.isEmailVerified === false) {
-            res.status(400).json({ success: false, message: "Email Not Verified"});
         }else {
             res.status(404).json({ message: 'Invalid Email Or Password' });
         };
