@@ -17,9 +17,11 @@ module.exports.login = async function (req, res) {
 
         if(!contractor || !homeowner || !supplier) {
              res.status(404).json({ message: "User Not Found' });
-        }else if (contractor.isEmailVerified === false || supplier.isEmailVerified === false || homeowner.isEmailVerified === false) {
+        } 
+        if (contractor.isEmailVerified === false || supplier.isEmailVerified === false || homeowner.isEmailVerified === false) {
             res.status(400).json({ success: false, message: "Email Not Verified"});
-        }else if (contractor && bcrypt.compareSync(password, contractor.password)) {
+        }
+        else if (contractor && bcrypt.compareSync(password, contractor.password)) {
             const token = jwt.sign({
                 id: contractor._id,
                 userType: "Contractor"
