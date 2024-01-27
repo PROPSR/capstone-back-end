@@ -16,7 +16,7 @@ module.exports.login = async function (req, res) {
         const homeowner = await Homeowner.findOne({ email: email });
 
         if(!contractor || !homeowner || !supplier) {
-             res.status(404).json({ message: "User Not Found' });
+             res.status(404).json({ message: "User Not Found" });
         } 
         if (contractor.isEmailVerified === false || supplier.isEmailVerified === false || homeowner.isEmailVerified === false) {
             res.status(400).json({ success: false, message: "Email Not Verified"});
