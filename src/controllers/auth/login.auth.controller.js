@@ -15,47 +15,73 @@ module.exports.login = async function (req, res) {
         const supplier = await Supplier.findOne({ email: email });
         const homeowner = await Homeowner.findOne({ email: email });
 
-        if(!contractor && !homeowner && !supplier) {
-             res.status(404).json({ message: "User Not Found" });
-        } 
-        else if (contractor.isEmailVerified === false || supplier.isEmailVerified === false || homeowner.isEmailVerified === false) {
-            res.status(400).json({ success: false, message: "Email Not Verified"});
+        let user;
+
+        if (contractor) {
+            user = contractor;
+        } else if (supplier) {
+            user = supplier;
+        } else if (homeowner) {
+            user = homeowner;
         }
-        else if (contractor && bcrypt.compareSync(password, contractor.password)) {
-            const token = jwt.sign({
-                id: contractor._id,
-                userType: "Contractor"
-            }, process.env.JWT_SECRET, {
-                expiresIn: "24h"
-            });
 
-            res.status(200).json({ success: true, message: "Login Successful", token: token });
+        if (!user) {
+            res.status(404).json({ message: "User Not Found" });
+        } else if (user.isEmailVerified === false) {
+            res.status(400).json({ success: false, message: "Email Not Verified" });
+        } else {
+            if (contractor && bcrypt.compareSync(password, contractor.password)) {
+                const token = jwt.sign({
+                    id: contractor._id,
+                    userType: "Contractor"
+                }, process.env.JWT_SECRET, {
+                    expiresIn: "24h"
+                });
 
-        } else if (supplier && bcrypt.compareSync(password, supplier.password)) {
-            const token = jwt.sign({
-                id: supplier._id,
-                userType: "Supplier"
-            }, process.env.JWT_SECRET, {
-                expiresIn: "24h"
-            });
+                res.status(200).json({ success: true, message: "Login Successful", token: token });
 
-            res.status(200).json({ success: true, message: "Login Successful", token: token });
+            } else if (supplier && bcrypt.compareSync(password, supplier.password)) {
+                const token = jwt.sign({
+                    id: supplier._id,
+                    userType: "Supplier"
+                }, process.env.JWT_SECRET, {
+                    expiresIn: "24h"
+                });
 
-        } else if (homeowner && bcrypt.compareSync(password, homeowner.password)) {
-            let token = await homeowner.generateToken();
+                res.status(200).json({ success: true, message: "Login Successful", token: token });
 
-            res.status(200).json({ success: true, message: "Login Successful", token: token });
-        }else {
-            res.status(404).json({ message: 'Invalid Email Or Password' });
-        };
+            } else if (homeowner && bcrypt.compareSync(password, homeowner.password)) {
+                let token = await homeowner.generateToken();
+
+                res.status(200).json({ success: true, message: "Login Successful", token: token });
+            } else {
+                const otp = generateOtp();
+                const newOtp = new Otp({
+                    userId: user._id,
+                    email: user.email,
+                    otp: otp,
+                    type: "Password-Reset",
+                    userType: user.constructor.modelName
+                });
+                await newOtp.save();
+                await passwordReset(newOtp.email, newOtp.otp);
+                res.status(200).json({
+                    success: true,
+                    message: "Password Reset Mail Sent Successfully",
+                    data: user,
+                    otp: newOtp.otp
+                });
+            }
+        }
     } catch (error) {
         console.log(error);
         res.status(500).json({
             success: false,
-            message: "User Login Failed",
+            message: "Login Failed",
         });
-    };
+    }
 };
+
 
 module.exports.sendPasswordResetOtp = async function(req, res) {
     try {
