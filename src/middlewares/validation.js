@@ -168,14 +168,13 @@ module.exports.validateSupplierUpdate = function(req, res, next){
     next();
 };
 
-module.exports.validateQuote= function(req, res, next){
+module.exports.validateQuoteCreation = function(req, res, next){
     const schema = Joi.object({
-        contractorId: Joi.objectId().required(),
-        projectId: Joi.objectId().required(),
         amount : Joi.number().required(),
         status : Joi.string().required(),
         dateAvailable : Joi.date().required(),
         priorExperience : Joi.boolean().required(),
+        detailsOfPriorExperience : Joi.string().required(),
         paymentTerms : Joi.string().required()
     });
 
@@ -190,6 +189,26 @@ module.exports.validateQuote= function(req, res, next){
     next();
 };
 
+module.exports.validateQuoteUpdate = function(req, res, next){
+    const schema = Joi.object({
+        amount : Joi.number().optional(),
+        status : Joi.string().optional(),
+        dateAvailable : Joi.date().optional(),
+        priorExperience : Joi.boolean().optional(),
+        detailsOfPriorExperience : Joi.string().optional(),
+        paymentTerms : Joi.string().optional()
+    });
+
+    const {error} = schema.validate(req.body);
+    if(error){
+        res.status(400).json({
+            message : "An error occured",
+            error : error.details[0].message
+        });
+        return;
+    }
+    next();
+};
 
 module.exports.validateProductCreation = function(req, res, next){
     const schema = Joi.object({
