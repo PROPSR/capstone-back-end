@@ -258,15 +258,16 @@ module.exports.validateProjectCreation = function(req, res, next){
     const schema = Joi.object({
         name : Joi.string().required(),
         type : Joi.string().required(),
-        budget : Joi.number().required(),
         description : Joi.string().required(),
-        accessibilityNeeds : Joi.string().required(),
-        address : Joi.string().required(),
-        projectPhase : Joi.string().required(),
-        materialRequirements : Joi.string().required(),
+        budget : Joi.number().required(),
+        startDate: Joi.date().required(),
+        endDate: Joi.date().required(),
         permitsRequired : Joi.boolean().required(),
         permits : Joi.array().required(),
-        timeline : Joi.object().required(),
+        materialRequirements : Joi.string().required(),
+        projectPhase : Joi.string().required(),
+        address : Joi.string().required(),
+        accessibilityNeeds : Joi.string().required(),
     });
     
 

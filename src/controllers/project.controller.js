@@ -65,7 +65,7 @@ module.exports.projectsMarketplace = async function(req, res, next){
 
 module.exports.createProject = async function(req, res, next){    
     try {
-        const {name, type, description, budget, timeline, permitsRequired, permits, materialRequirements, projectPhase,address, accessibilityNeeds } = req.body;
+        const {name, type, description, budget, startDate, endDate, permitsRequired, permits, materialRequirements, projectPhase,address, accessibilityNeeds } = req.body;
 
         let homeowner = await Homeowner.findById(req.user.id);
         if(!homeowner) throw new Error(`Homeowner with provided ID ${req.user.id} doesn't exist`);
@@ -77,7 +77,8 @@ module.exports.createProject = async function(req, res, next){
             type,
             description,
             budget,
-            timeline,
+            startDate,
+            endDate,
             permitsRequired,
             permits,
             materialRequirements,
