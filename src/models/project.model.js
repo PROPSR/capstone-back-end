@@ -15,13 +15,11 @@ const projectSchema = new mongoose.Schema({
     budget:{
         type : Number
     },
-    timeline:{
-        startDate : {
-            type : Date
-        },
-        endDate : {
-            type : Date
-        }
+    startDate : {
+        type : Date
+    },
+    endDate : {
+        type : Date
     },
     permitsRequired : {
         type : Boolean

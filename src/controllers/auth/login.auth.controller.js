@@ -27,7 +27,7 @@ module.exports.login = async function (req, res) {
                     }, process.env.JWT_SECRET, {
                         expiresIn: "24h"
                     });
-                    res.status(200).json({ success: true, message: "Login Successful", token: token });
+                    res.status(200).json({ success: true, message: "Login Successful", token: token, userType: user.userType });
                 } else {
                     res.status(401).json({ success: false, message: "Invalid Password" });
                 }
@@ -39,7 +39,7 @@ module.exports.login = async function (req, res) {
                     }, process.env.JWT_SECRET, {
                         expiresIn: "24h"
                     });
-                    res.status(200).json({ success: true, message: "Login Successful", token: token });
+                    res.status(200).json({ success: true, message: "Login Successful", token: token, userType: user.userType });
                 } else {
                     res.status(401).json({ success: false, message: "Invalid Password" });
                 }
@@ -51,7 +51,7 @@ module.exports.login = async function (req, res) {
                     }, process.env.JWT_SECRET, {
                         expiresIn: "24h"
                     });
-                    res.status(200).json({ success: true, message: "Login Successful", token: token });
+                    res.status(200).json({ success: true, message: "Login Successful", token: token, userType: user.userType });
                 } else {
                     res.status(401).json({ success: false, message: "Invalid Password" });
                 }

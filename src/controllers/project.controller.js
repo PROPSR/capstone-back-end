@@ -65,7 +65,7 @@ module.exports.projectsMarketplace = async function(req, res, next){
 
 module.exports.createProject = async function(req, res, next){    
     try {
-        const {name, type, description, budget, timeline, permitsRequired, permits, materialRequirements, projectPhase,address, accessibilityNeeds } = req.body;
+        const {name, type, description, budget, startDate, endDate, permitsRequired, permits, materialRequirements, projectPhase,address, accessibilityNeeds } = req.body;
 
         let homeowner = await Homeowner.findById(req.user.id);
         if(!homeowner) throw new Error(`Homeowner with provided ID ${req.user.id} doesn't exist`);
@@ -77,7 +77,8 @@ module.exports.createProject = async function(req, res, next){
             type,
             description,
             budget,
-            timeline,
+            startDate,
+            endDate,
             permitsRequired,
             permits,
             materialRequirements,
@@ -98,68 +99,4 @@ module.exports.createProject = async function(req, res, next){
         next(err);
     } 
 };
-
-module.exports.search = async function(req, res, next){
-    try {
-
-        // const query = {};
-
-        // if (filterParams.name) {
-        //   query.name = { $regex: filterParams.name, $options: 'i' }; // Case-insensitive search
-        // }
-      
-        // if (filterParams.category) {
-        //   query.category = filterParams.category;
-        // }
-        // const page = req.query.page || 1;
-        // const limit = req.query.limit || 10;
-        // const skip = (page-1) * limit;
-        // const search = req.query.search || ""
-
-        // const { name, category, price } = req.query;
-    
-        // // Build the filter object based on the provided parameters
-        // const filter = {};
-        // if (name) filter.name = new RegExp(name, 'i'); // Case-insensitive name search
-        // if (category) filter.category = category;
-        // if (price) filter.price = { $gte: parseFloat(price) };
-    
-        // // Use the filter object in the Mongoose find method
-        // const items = await Project.find(filter);
-        // res.json(items);
-      } catch (error) {
-            next(error);
-      }
-};
-
-module.exports.filter = async function(req, res, next){
-    try {
-
-        console.log(req.query);
-
-        const page = req.query.page || 1;
-        const limit = req.query.limit || 10;
-        const skip = (page-1) * limit;
-        const query = {};
-
-        if (req.query.status) {
-          query.status = { $regex: req.query.status, $options: 'i' };
-        }
-      
-        if (req.query.type) {
-            query.type = { $regex: req.query.type, $options: 'i' }; 
-          }
-
-        console.log(query);
-
-        const projects = await Project.find(query).skip(skip).limit(limit);
-        res.status(200).json({
-            message : "All projects retreived",
-            data : projects
-        });
-      } catch (error) {
-            next(error);
-      }
-};
-
 
