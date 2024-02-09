@@ -263,7 +263,7 @@ module.exports.validateProjectCreation = function(req, res, next){
         startDate: Joi.date().required(),
         endDate: Joi.date().required(),
         permitsRequired : Joi.boolean().required(),
-        permits : Joi.array().required(),
+        permits : Joi.string().required(),
         materialRequirements : Joi.string().required(),
         projectPhase : Joi.string().required(),
         address : Joi.string().required(),
