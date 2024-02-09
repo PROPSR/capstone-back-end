@@ -96,6 +96,7 @@ module.exports.createProject = async function(req, res, next){
             data : newProject
         });
     } catch (err) {
+        console.log(err);
         next(err);
     } 
 };
