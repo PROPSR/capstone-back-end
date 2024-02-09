@@ -1,4 +1,5 @@
 const express = require("express");
+require('express-async-errors');
 require("dotenv").config();
 const {connectToMongoDB} = require("./src/models/index");
 const router = require("./src/routes");

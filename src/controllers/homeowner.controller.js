@@ -324,3 +324,48 @@ module.exports.assignContractor = async function(req, res, next){
        next(err); 
     }  
 };
+
+module.exports.filter = async function(req, res, next){
+    try {
+
+        console.log(req.query);
+
+        const page = req.query.page || 1;
+        const limit = req.query.limit || 10;
+        const skip = (page-1) * limit;
+        const query = {};
+
+        if (req.query.status) {
+          query.status = { $regex: req.query.status, $options: 'i' };
+        }
+      
+        if (req.query.type) {
+            query.type = { $regex: req.query.type, $options: 'i' }; 
+          }
+
+        console.log(query);
+
+        const projects = await Project.find(query).skip(skip).limit(limit);
+        res.status(200).json({
+            message : "All projects retreived",
+            data : projects
+        });
+      } catch (error) {
+            next(error);
+      }
+};
+
+
+module.exports.search = async function(req, res, next){
+    try {
+        const {projectName} = req.query;
+        const projects = await Project.find({ name: { $regex: new RegExp(projectName, 'i') } });
+        res.status(200).json({
+            message : "All projects retreived",
+            data : projects
+        });
+      } catch (error) {
+            next(error);
+      }
+};
+
