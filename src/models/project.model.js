@@ -24,9 +24,9 @@ const projectSchema = new mongoose.Schema({
     permitsRequired : {
         type : Boolean
     },
-    permits : [
-        {type : String}
-    ],
+    permits : {
+        type : String
+},
     materialRequirements : {
         type : String
     },
