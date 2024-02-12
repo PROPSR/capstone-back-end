@@ -12,7 +12,7 @@ module.exports.verifyEmailVerificationOtp = async function(req, res) {
 
         const otpCode = await Otp.findOne({userId: userId, otp: otp, type: "Email-Verification"}).sort({createdAt: -1});
         if(!otpCode) {
-            return res.status(404).json({
+            return res.status(401).json({
                 success: false,
                 message: "otp code not found"
             });
