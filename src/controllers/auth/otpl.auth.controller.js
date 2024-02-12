@@ -7,10 +7,10 @@ const Otp = require("../../models/otp.model");
 
 module.exports.verifyEmailVerificationOtp = async function(req, res) {
     try {
-        const userId = req.params.id;
-        const { otp } = req.body;
+        // const userId = req.params.id;
+        const { otp, email } = req.body;
 
-        const otpCode = await Otp.findOne({userId: userId, otp: otp, type: "Email-Verification"}).sort({createdAt: -1});
+        const otpCode = await Otp.findOne({email: email, otp: otp, type: "Email-Verification"}).sort({createdAt: -1});
         if(!otpCode) {
             return res.status(401).json({
                 success: false,
