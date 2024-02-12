@@ -8,7 +8,7 @@ const otpSchema = new Schema({
         type: String
     },
     otp: {
-        type: Number
+        type: String
     },
     type: {
         type: String,
