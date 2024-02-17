@@ -17,12 +17,14 @@ module.exports.signup = async function(req, res, next){
         if (contractorExists || supplierExists || homeownerExists) {
           return res.status(400).json({ message: 'Email already in use' });
         }
+        const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUNDS));
+        const hash = bcrypt.hashSync(password, salt);
 
         let homeowner = await new Homeowner({
             firstName,
             lastName,
             email,
-            password,
+            password: hash,
             address,
             city,
             state,
